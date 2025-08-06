@@ -1,27 +1,19 @@
 const express = require("express");
 const app = express();
 const connectDB = require("./config/database");
-const User = require("./model/user")
+const cookieParser = require("cookie-parser");
+const jwttoken = require("jsonwebtoken");
+const authRouter = require("./routes/auth");
+const profileRouter = require("./routes/profile");
+
+app.use(express.json());
+app.use(cookieParser());
+
+app.use("/", authRouter)
+app.use("/", profileRouter)
 
 
-app.post("/signup", async (req, res) => {
 
-    // Manual way of pushing Data
-    const user = new User({
-        firstName: "Rahul",
-        lastName: "Belwin",
-        emailId: "Vrahul@123.com",
-        password: "123456"
-    });
-    try {
-        await user.save();
-        res.send("User Added Successfully")
-    }
-    catch (err) {
-        res.status(400).send("Error Saving Data", err.message)
-    }
-
-})
 
 
 connectDB().then(() => {
