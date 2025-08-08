@@ -14,10 +14,16 @@ const userSchema = new mongoose.Schema({
         type: "String"
     },
     emailId: {
-        type: "String"
+        type: "String",
+        unique: true,
+        required: true,
+        index: true
     },
     password: {
         type: "String"
+    },
+    skills: {
+        type: ["String"]
     },
     age: {
         type: "Number"
@@ -38,4 +44,5 @@ userSchema.methods.getJWT = async function () {
 
 }
 
+// userSchema.indexes({ emailId: 1 })
 module.exports = mongoose.model("User", userSchema)
