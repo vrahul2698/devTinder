@@ -4,11 +4,11 @@ const User = require("../model/user")
 
 const AuthSignin = async (req, res, next) => {
     try {
-        const cookies = req.cookies;
-        if (!cookies) {
-            throw new Error("Invalid Token")
+     const { token } = req.cookies;
+        if (!token) {
+           return res.status(401).send("Please Login.!")
         }
-        const { token } = cookies;
+        
         const checkJwt = await jwttoken.verify(token, "Rahul2698");
         const userCheck = await User.findById(checkJwt._id);
         if (!userCheck) {
