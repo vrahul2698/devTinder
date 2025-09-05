@@ -13,6 +13,10 @@ const userSchema = new mongoose.Schema({
     gender: {
         type: "String"
     },
+    photoUrl: {
+        type: "String",
+        default:"https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+    },
     emailId: {
         type: "String",
         unique: true,

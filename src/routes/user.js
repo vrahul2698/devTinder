@@ -4,7 +4,7 @@ const userRouter = express.Router();
 const ConnectionRequest = require("../model/sendConnection");
 const User = require("../model/user");
 
-const USER_COMMON_DATA = "firstName lastName skills"
+const USER_COMMON_DATA = "firstName lastName skills photoUrl"
 
 userRouter.get("/user/requests", AuthSignin, async (req, res) => {
     try {
@@ -81,7 +81,7 @@ userRouter.get("/user/feed", AuthSignin, async (req, res) => {
             ]
         }).select(USER_COMMON_DATA).skip(skip).limit(limit)
 
-        res.send({ data: users })
+        res.send(users)
     }
     catch (err) {
         res.status(400).send("Error : " + err.message)

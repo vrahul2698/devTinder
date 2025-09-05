@@ -21,6 +21,7 @@ profileRouter.get("/profile", AuthSignin, async (req, res) => {
 // profile details edit except password
 profileRouter.patch("/profile/edit", AuthSignin, async (req, res) => {
     try {
+        console.log("hitted")
         const Valid = validateProfileDetails(req);
         if (!Valid) {
             throw new Error("Edit Fields not allowed")
