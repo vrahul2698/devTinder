@@ -4,7 +4,7 @@ const userRouter = express.Router();
 const ConnectionRequest = require("../model/sendConnection");
 const User = require("../model/user");
 
-const USER_COMMON_DATA = "firstName lastName skills photoUrl"
+const USER_COMMON_DATA = "firstName lastName skills photoUrl age gender about"
 
 userRouter.get("/user/requests", AuthSignin, async (req, res) => {
     try {

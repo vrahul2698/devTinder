@@ -10,6 +10,9 @@ const userSchema = new mongoose.Schema({
     lastName: {
         type: "String"
     },
+    about: {
+        type: "String"
+    },
     gender: {
         type: "String"
     },

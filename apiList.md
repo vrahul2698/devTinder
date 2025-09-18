@@ -32,3 +32,6 @@
 - GET /user/feed - Gets you the profiles of other users on platform
 
 STATUS - ignore,interested,accepted,rejected
+
+
+V2xIqGFYyefjL9TQ - rahuldevtinder2
