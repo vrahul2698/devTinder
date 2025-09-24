@@ -9,6 +9,8 @@ const profileRouter = require("./routes/profile");
 const connectionRouter = require("./routes/connectionRequest")
 const userRouter = require('./routes/user');
 const cors = require("cors");
+
+require("./utils/cronJob");
 app.use(cors({
     origin: "http://localhost:5173",   // your frontend URL
     credentials: true,
