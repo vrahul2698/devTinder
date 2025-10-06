@@ -9,6 +9,7 @@ const profileRouter = require("./routes/profile");
 const connectionRouter = require("./routes/connectionRequest")
 const userRouter = require('./routes/user');
 const cors = require("cors");
+const paymentRouter = require("./routes/payment");
 
 require("./utils/cronJob");
 app.use(cors({
@@ -23,6 +24,7 @@ app.use("/", authRouter)
 app.use("/", profileRouter)
 app.use("/", connectionRouter)
 app.use("/", userRouter)
+app.use("/", paymentRouter)
 
 
 
