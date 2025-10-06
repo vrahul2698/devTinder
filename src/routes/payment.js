@@ -46,11 +46,13 @@ paymentRouter.post("/payment/create", AuthSignin, async (req, res) => {
 
 paymentRouter.post("/payment/webhook", async (req, res) => {
     try {
-        const webHoofSignature = req.get("X-Razorpay-Signature")
+        console.log("WebHook Called")
+        const webHoofSignature = req.get("X-Razorpay-Signature");
+        console.log(webHoofSignature, "webHoofSignature")
         const isWebHookValid = validateWebhookSignature(JSON.stringify(req?.body),
             webHoofSignature,
             process.env.RAZORPAY_WEBHOOK_SECRET);
-
+        console.log(isWebHookValid, "isWebHookValid")
         if (!isWebHookValid) {
             return res.status(400).json({ msg: "Web hook is no valid" })
         }
@@ -63,12 +65,12 @@ paymentRouter.post("/payment/webhook", async (req, res) => {
         const payment = await Payment.findOne({ orderId: paymentDetails.order_id });
         payment.status = paymentDetails.status;
         await payment.save();
-
-        const user = await User.findOne({_id : payment.userId});
+        console.log("Payment Saved")
+        const user = await User.findOne({ _id: payment.userId });
         user.isPremium = true;
         user.membershipType = payment.notes.membershipType;
         await user.save();
-
+        console.log("user Saved")
         //return success response to razorpay
         // if (req.body.event === "payment.captured") {
         // }
