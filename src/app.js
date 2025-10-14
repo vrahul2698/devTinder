@@ -10,6 +10,9 @@ const connectionRouter = require("./routes/connectionRequest")
 const userRouter = require('./routes/user');
 const cors = require("cors");
 const paymentRouter = require("./routes/payment");
+const http = require("http");
+const initializeSocket = require("./utils/socket");
+const chatRouter = require("./routes/chat");
 
 require("./utils/cronJob");
 app.use(cors({
@@ -25,14 +28,17 @@ app.use("/", profileRouter)
 app.use("/", connectionRouter)
 app.use("/", userRouter)
 app.use("/", paymentRouter)
+app.use("/", chatRouter)
 
 
+const server = http.createServer(app)
+initializeSocket(server);
 
 
 
 connectDB().then(() => {
     console.log("DataBase Connected Successfully")
-    app.listen(process.env.PORT, () => {
+    server.listen(process.env.PORT, () => {
         console.log("Server is Running successfully in port 3000")
     })
 }
