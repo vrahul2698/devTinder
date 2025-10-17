@@ -2,6 +2,7 @@
 const socket = require("socket.io");
 const crypto = require("crypto");
 const Chat = require("../model/chat");
+const ConnectionRequest = require("../model/sendConnection");
 
 const getSecretRoomId = (userId, targetUserId) => {
     return crypto.createHash("sha256").update([userId, targetUserId].sort().join("_")).digest("hex")
@@ -34,21 +35,32 @@ const initializeSocket = (server) => {
                 const roomId = getSecretRoomId(userId, targetUserId);
                 console.log(firstName + " : " + text);
 
-                let chat = await Chat.findOne({
-                    participants: { $all: [userId, targetUserId] }
-                });
-
-                if (!chat) {
-                    chat = await new Chat({
-                        participants: [userId, targetUserId],
-                        messages: []
+                //check if userId and TargetUserId are friends
+                let connectionReq = await ConnectionRequest.findOne({
+                    $or: [
+                        { fromUserId: userId, toUserId: targetUserId },
+                        { fromUserId: targetUserId, toUserId: userId },
+                    ],
+                    status: "accepted"
+                })
+                if (connectionReq) {
+                    let chat = await Chat.findOne({
+                        participants: { $all: [userId, targetUserId] }
                     });
+
+                    if (!chat) {
+                        chat = await new Chat({
+                            participants: [userId, targetUserId],
+                            messages: []
+                        });
+                    }
+
+                    chat.messages.push({ senderId: userId, text });
+
+                    await chat.save();
+                    io.to(roomId).emit("messageRecieved", { firstName, lastName, text })
                 }
 
-                chat.messages.push({ senderId: userId, text });
-
-                await chat.save();
-                io.to(roomId).emit("messageRecieved", { firstName, lastName, text })
 
             }
             catch (err) {
